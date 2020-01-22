@@ -12,8 +12,8 @@ var MyCircularQueue = function(k) {
     );
   }
   this.data = new Array(size);
-  this.pStart = NOT_AN_INDEX;
-  this.pEnd = NOT_AN_INDEX;
+  this.head = NOT_AN_INDEX;
+  this.tail = NOT_AN_INDEX;
 };
 
 /**
@@ -26,12 +26,12 @@ MyCircularQueue.prototype.enQueue = function(value) {
     return false;
   }
   if (this.isEmpty()) {
-    this.pStart = 0;
-    this.pEnd = 0;
+    this.head = 0;
+    this.tail = 0;
   } else {
-    this.pEnd = (this.pEnd + 1) % this.data.length;
+    this.tail = (this.tail + 1) % this.data.length;
   }
-  this.data[this.pEnd] = value;
+  this.data[this.tail] = value;
   return true;
 };
 
@@ -43,11 +43,11 @@ MyCircularQueue.prototype.deQueue = function() {
   if (this.isEmpty()) {
     return false;
   }
-  if (this.pStart === this.pEnd) {
-    this.pStart = NOT_AN_INDEX;
-    this.pEnd = NOT_AN_INDEX;
+  if (this.head === this.tail) {
+    this.head = NOT_AN_INDEX;
+    this.tail = NOT_AN_INDEX;
   } else {
-    this.pStart = (this.pStart + 1) % this.data.length;
+    this.head = (this.head + 1) % this.data.length;
   }
   return true;
 };
@@ -60,7 +60,7 @@ MyCircularQueue.prototype.Front = function() {
   if (this.isEmpty()) {
     return NOT_AN_INDEX;
   }
-  return this.data[this.pStart];
+  return this.data[this.head];
 };
 
 /**
@@ -71,7 +71,7 @@ MyCircularQueue.prototype.Rear = function() {
   if (this.isEmpty()) {
     return NOT_AN_INDEX;
   }
-  return this.data[this.pEnd];
+  return this.data[this.tail];
 };
 
 /**
@@ -79,7 +79,7 @@ MyCircularQueue.prototype.Rear = function() {
  * @return {boolean}
  */
 MyCircularQueue.prototype.isEmpty = function() {
-  return this.pStart === NOT_AN_INDEX;
+  return this.head === NOT_AN_INDEX;
 };
 
 /**
@@ -87,9 +87,7 @@ MyCircularQueue.prototype.isEmpty = function() {
  * @return {boolean}
  */
 MyCircularQueue.prototype.isFull = function() {
-  return (
-    (this.data.length + 1 + this.pEnd - this.pStart) % this.data.length === 0
-  );
+  return (this.tail + 1) % this.data.length === this.head;
 };
 
 /**
