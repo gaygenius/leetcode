@@ -58,7 +58,7 @@ MyCircularQueue.prototype.deQueue = function() {
  */
 MyCircularQueue.prototype.Front = function() {
   if (this.isEmpty()) {
-    return false;
+    return NOT_AN_INDEX;
   }
   return this.data[this.pStart];
 };
@@ -69,7 +69,7 @@ MyCircularQueue.prototype.Front = function() {
  */
 MyCircularQueue.prototype.Rear = function() {
   if (this.isEmpty()) {
-    return false;
+    return NOT_AN_INDEX;
   }
   return this.data[this.pEnd];
 };
@@ -90,18 +90,6 @@ MyCircularQueue.prototype.isFull = function() {
   return (
     (this.data.length + 1 + this.pEnd - this.pStart) % this.data.length === 0
   );
-};
-
-MyCircularQueue.prototype.log = function() {
-  console.log({
-    front: this.Front(),
-    rear: this.Rear(),
-    empty: this.isEmpty(),
-    full: this.isFull(),
-    pStart: this.pStart,
-    pEnd: this.pEnd,
-    data: this.data
-  });
 };
 
 /**
