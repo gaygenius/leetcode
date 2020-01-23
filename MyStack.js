@@ -2,11 +2,11 @@ var Queue = function() {
   this.data = [];
 };
 
-Queue.prototype.push = function(x) {
+Queue.prototype.add = function(x) {
   this.data.push(x);
 };
 
-Queue.prototype.pop = function() {
+Queue.prototype.remove = function() {
   return this.data.shift();
 };
 
@@ -18,11 +18,15 @@ Queue.prototype.empty = function() {
   return this.data.length === 0;
 };
 
+Queue.prototype.size = function() {
+  return this.data.length;
+};
+
 /**
  * Initialize your data structure here.
  */
 var MyStack = function() {
-  this.pushQueue = new Queue();
+  this.storage = new Queue();
 };
 
 /**
@@ -31,7 +35,11 @@ var MyStack = function() {
  * @return {void}
  */
 MyStack.prototype.push = function(x) {
-  this.pushQueue.push(x);
+  let movesNeeded = this.storage.size();
+  this.storage.add(x);
+  while (movesNeeded-- > 0) {
+    this.storage.add(this.storage.remove());
+  }
 };
 
 /**
@@ -39,16 +47,7 @@ MyStack.prototype.push = function(x) {
  * @return {number}
  */
 MyStack.prototype.pop = function() {
-  const newQueue = new Queue();
-  let last;
-  while (!this.pushQueue.empty()) {
-    last = this.pushQueue.pop();
-    if (!this.pushQueue.empty()) {
-      newQueue.push(last);
-    }
-  }
-  this.pushQueue = newQueue;
-  return last;
+  return this.storage.remove();
 };
 
 /**
@@ -56,14 +55,7 @@ MyStack.prototype.pop = function() {
  * @return {number}
  */
 MyStack.prototype.top = function() {
-  const newQueue = new Queue();
-  let last;
-  while (!this.pushQueue.empty()) {
-    last = this.pushQueue.pop();
-    newQueue.push(last);
-  }
-  this.pushQueue = newQueue;
-  return last;
+  return this.storage.peek();
 };
 
 /**
@@ -71,7 +63,7 @@ MyStack.prototype.top = function() {
  * @return {boolean}
  */
 MyStack.prototype.empty = function() {
-  return this.pushQueue.empty();
+  return this.storage.empty();
 };
 
 /**
