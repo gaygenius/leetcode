@@ -11,15 +11,13 @@ var isValid = function(s) {
   const delimiterStack = [];
   for (let i = 0; i < s.length; i++) {
     const currentChar = s[i];
-    if ("([{".indexOf(currentChar) !== -1) {
-      delimiterStack.push(currentChar);
-    } else if (delimiterStack.length === 0) {
+    const closingMatch = closingDelimiter[currentChar];
+    if (closingMatch) {
+      // currentChar is opening delimeter
+      delimiterStack.push(closingMatch);
+    } else if (currentChar !== delimiterStack.pop()) {
+      // currentChar did not close properly or stack is empty
       return false;
-    } else {
-      const expectedClosingDelimiter = closingDelimiter[delimiterStack.pop()];
-      if (currentChar !== expectedClosingDelimiter) {
-        return false;
-      }
     }
   }
   return delimiterStack.length === 0;
