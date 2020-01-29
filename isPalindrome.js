@@ -3,23 +3,21 @@
  * @return {boolean}
  */
 var isPalindrome = function(x) {
-  if (x < 0) {
+  const isPositiveMultipleOf10 = x > 0 && x % 10 === 0;
+  // negative numbers and positive multiples of 10 are not palindromes
+  if (x < 0 || isPositiveMultipleOf10) {
     return false;
   }
-  let remainder = x;
-  const digits = [];
-  while (remainder > 0) {
-    const digit = remainder % 10;
-    digits.push(digit);
-    remainder = (remainder - digit) / 10;
+  let revertedLowerHalf = 0;
+  let upperHalf = x;
+  while (upperHalf > revertedLowerHalf) {
+    revertedLowerHalf = revertedLowerHalf * 10 + (upperHalf % 10);
+    upperHalf = Math.trunc(upperHalf / 10);
   }
-  const maxIndex = digits.length - 1;
-  let i = 0;
-  while (i * 2 < maxIndex) {
-    if (digits[i] !== digits[maxIndex - i]) {
-      return false;
-    }
-    i++;
+  // for even number of digits, the upper half and reverted lower will be equal
+  if (upperHalf === revertedLowerHalf) {
+    return true;
   }
-  return true;
+  // for an odd number of digits, the middle digit was reverted and can be ignored
+  return upperHalf === Math.trunc(revertedLowerHalf / 10);
 };
